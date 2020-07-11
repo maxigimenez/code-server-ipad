@@ -61,36 +61,37 @@
       "size" : "29x29"
     },
     {
-      "filename" : "icons8-visual-studio-code-2019-40.png",
+      "filename" : "icons8-visual-studio-2019-40.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "40x40"
     },
     {
-      "filename" : "icons8-visual-studio-code-2019-80.png",
+      "filename" : "icons8-visual-studio-2019-80.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "icons8-visual-studio-code-2019-76.png",
+      "filename" : "icons8-visual-studio-2019-76.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "76x76"
     },
     {
-      "filename" : "icons8-visual-studio-code-2019-152.png",
+      "filename" : "icons8-visual-studio-2019-152.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "76x76"
     },
     {
-      "filename" : "icons8-visual-studio-code-2019-167.png",
+      "filename" : "icons8-visual-studio-2019-167.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "83.5x83.5"
     },
     {
+      "filename" : "icons8-visual-studio-2019-1024.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"

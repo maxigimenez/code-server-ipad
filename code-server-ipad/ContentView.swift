@@ -23,7 +23,7 @@ struct SwiftUIWebView: UIViewRepresentable {
     @ObservedObject var viewModel: WebViewModel
 
     let webView = WKWebView()
-
+    
     func makeUIView(context: UIViewRepresentableContext<SwiftUIWebView>) -> WKWebView {
         self.webView.navigationDelegate = context.coordinator
         if let url = URL(string: viewModel.link) {
@@ -54,8 +54,8 @@ struct SwiftUIWebView: UIViewRepresentable {
 }
 
 struct ContentView: View {
-    @ObservedObject var model = WebViewModel(link: "http://localhost:3000")
-    
+    @ObservedObject var model = WebViewModel(link: "http://192.168.1.78:8080")
+
     var body: some View {
         SwiftUIWebView(viewModel: model)
     }
