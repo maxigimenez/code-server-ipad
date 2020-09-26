@@ -25,6 +25,14 @@ struct SwiftUIWebView: UIViewRepresentable {
     let webView = WKWebView()
     
     func makeUIView(context: UIViewRepresentableContext<SwiftUIWebView>) -> WKWebView {
+
+        self.webView.scrollView.bounces = false
+        self.webView.scrollView.alwaysBounceVertical = false
+        self.webView.scrollView.alwaysBounceVertical = false
+        self.webView.hack_removeInputAccessory()
+//        self.RemoveAutoCompleteFromWebView(webView: self.webView)
+        self.webView.evaluateJavaScript("alert('a')", completionHandler: nil)
+        
         self.webView.navigationDelegate = context.coordinator
         if let url = URL(string: viewModel.link) {
             self.webView.load(URLRequest(url: url))
@@ -34,6 +42,13 @@ struct SwiftUIWebView: UIViewRepresentable {
 
     func updateUIView(_ uiView: WKWebView, context: UIViewRepresentableContext<SwiftUIWebView>) {
         return
+    }
+    
+    func RemoveAutoCompleteFromWebView(webView: WKWebView) {
+        let script: String = """
+            alert('1')
+        """
+        webView.evaluateJavaScript(script, completionHandler: nil)
     }
 
     class Coordinator: NSObject, WKNavigationDelegate {
@@ -58,5 +73,36 @@ struct ContentView: View {
 
     var body: some View {
         SwiftUIWebView(viewModel: model)
+    }
+}
+
+fileprivate final class InputAccessoryHackHelper: NSObject {
+    @objc var inputAccessoryView: AnyObject? { return nil }
+}
+
+extension WKWebView {
+    func hack_removeInputAccessory() {
+        guard let target = scrollView.subviews.first(where: {
+            String(describing: type(of: $0)).hasPrefix("WKContent")
+        }), let superclass = target.superclass else {
+            return
+        }
+
+        let noInputAccessoryViewClassName = "\(superclass)_NoInputAccessoryView"
+        var newClass: AnyClass? = NSClassFromString(noInputAccessoryViewClassName)
+
+        if newClass == nil, let targetClass = object_getClass(target), let classNameCString = noInputAccessoryViewClassName.cString(using: .ascii) {
+            newClass = objc_allocateClassPair(targetClass, classNameCString, 0)
+
+            if let newClass = newClass {
+                objc_registerClassPair(newClass)
+            }
+        }
+
+        guard let noInputAccessoryClass = newClass, let originalMethod = class_getInstanceMethod(InputAccessoryHackHelper.self, #selector(getter: InputAccessoryHackHelper.inputAccessoryView)) else {
+            return
+        }
+        class_addMethod(noInputAccessoryClass.self, #selector(getter: InputAccessoryHackHelper.inputAccessoryView), method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
+        object_setClass(target, noInputAccessoryClass)
     }
 }
